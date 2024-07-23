@@ -175,10 +175,9 @@ Configurar la columna `major_id` de la tabla `students` como una clave foránea 
 
 **Acción**
 - Aquí tienes un ejemplo de cómo hacerlo:
-  ```sql
-  ALTER TABLE students
-  ADD FOREIGN KEY (major_id)
-  REFERENCES majors (major_id);
+  ```psql
+  ALTER TABLE students ADD FOREIGN KEY (major_id) REFERENCES majors (major_id);
+  ```
 
 ### Paso 21: CREAR COLUMNA course_id
 
@@ -186,11 +185,9 @@ Agregue una columna course_id. Dale un tipo de SERIAL y conviértelo en la clave
 
 **Acción**
 - Escriba en el indicador psql:
-```sql
-  ALTER TABLE courses
-  ADD COLUMN course_id
-  SERIAL PRIMARY KEY;
-```
+ ```psql
+  ALTER TABLE coursesADD COLUMN course_id SERIAL PRIMARY KEY;
+ ```
 
 
   
