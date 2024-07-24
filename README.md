@@ -71,40 +71,26 @@ Este documento proporciona un registro detallado de las actividades realizadas y
      ```
    - **Resultado Esperado**: Deberías estar conectado a la base de datos `students`, lista para agregar tablas.
 
-### Paso 7: CREAR TABLA `students`
+### Paso 7: CREAR TABLA 
 
-Los archivos CSV contienen una serie de estudiantes con información sobre ellos, y algunos cursos y especialidades. Tendrás cuatro tablas: una para los estudiantes y su información, una para cada especialidad, otra para cada curso y una última para mostrar qué cursos están incluidos en cada especialidad. Primero, crea la tabla `students`.
+Los archivos CSV contienen una serie de estudiantes con información sobre ellos, y algunos cursos y especialidades. Tendrás cuatro tablas: una para `students` y su información, una para cada especialidad `majors`, otra para cada curso `courses` y una última para mostrar qué cursos están incluidos en cada especialidad `majors_courses`. 
 
 **Consejos**
 - Utiliza las palabras clave `CREATE TABLE`.
 - Debe haber paréntesis después del nombre de la tabla.
 - He aquí un ejemplo: `CREATE TABLE <table_name>();`
 
-**Acción**
+1. **Acción**:
 Escribe `CREATE TABLE students();` en el indicador psql.
 
-### Pao 8: CREAR TABLA `majors`
-
-La segunda tabla será para cada especialidad única que aparezca en los datos. Crea una tabla llamada `majors`.
-
-**Acción**
 Escribe `CREATE TABLE majors();` en el indicador psql.
 
-### Paso 9: CREAR TABLA `courses`
-
-La tercera tabla es para cada curso único en los datos. Crea otra tabla llamada `courses`.
-
-**Acción**
 Escribe `CREATE TABLE courses();` en el indicador psql.
 
-### Paso 10: CREAR TABLA `majors_courses`
-
-La tabla final será una tabla de unión para las especialidades y los cursos. Créala con el nombre `majors_courses`.
-
-**Acción**
 Escribe `CREATE TABLE majors_courses();` en el indicador psql.
 
-### Paso 11: VERIFICAR TABLAS
+
+### Paso 8: VERIFICAR TABLAS
 
 Utiliza el comando de atajo `\d` para visualizar tus tablas y asegurarte de que estás satisfecho con ellas.
 
@@ -112,68 +98,56 @@ Utiliza el comando de atajo `\d` para visualizar tus tablas y asegurarte de que 
 - Es el comando de atajo `\d`.
 - Escribe `\d` en el indicador psql.
 
-### Paso 12: CREAR COLUMNA student_id
 
-Ahora vamos a agregar columnas. El archivo `students.csv` tiene cuatro campos; deberás crear una columna para cada uno de esos campos, así como una columna ID. Agrega una columna a la tabla `students` llamada `student_id`. Asigna a esta columna el tipo `SERIAL` para que se incremente automáticamente y conviértela en `PRIMARY KEY`.
+### Paso 9: CREAR COLUMNA 
 
-**Acción**
-- Escribe `ALTER TABLE students ADD COLUMN student_id SERIAL PRIMARY KEY;` en el indicador psql.
+Vamos a agregar columnas a la tabla `students` utilizando datos del archivo `students.csv`. Este archivo tiene cuatro campos, y agregaremos una columna para cada uno de esos campos, así como una columna ID.
 
-### Paso 13: CREAR COLUMNA first_name
+**Consejos:**
+- Utiliza la sentencia `ALTER TABLE` para agregar columnas a una tabla existente.
+- Asegúrate de especificar el tipo de datos y cualquier restricción necesaria para cada columna.
 
-La primera columna en `students.csv` es `first_name`. Agrega una columna a la tabla `students` con ese nombre. Asigna a esta columna el tipo `VARCHAR(50)` y dale la restricción `NOT NULL`.
+ 1. **Acción**: agregar `student_id` a la tabla `students`. Asigna a esta columna el tipo `SERIAL` para que se incremente automáticamente y conviértela en `PRIMARY KEY`.
 
-**Acción**
-- Escribe `ALTER TABLE students ADD COLUMN first_name VARCHAR(50) NOT NULL;` en el indicador psql.
+`ALTER TABLE students ADD COLUMN student_id SERIAL PRIMARY KEY;`
 
-### Paso 14: CREAR COLUMNA last_name
+2. **Acción**: Agregar columna first_name: Agrega una columna first_name a la tabla students. Asigna a esta columna el tipo VARCHAR(50) y dale la restricción NOT NULL.
 
-La siguiente columna en los datos es `last_name`. Agrégala a la tabla `students`. Asigna a esta columna el mismo tipo de datos y longitud máxima que `first_name` y asegúrate de que tenga la restricción `NOT NULL`.
+`ALTER TABLE students ADD COLUMN first_name VARCHAR(50) NOT NULL;`
 
-**Acción**
-- Escribe `ALTER TABLE students ADD COLUMN last_name VARCHAR(50) NOT NULL;` en el indicador psql.
+3. **Acción**: Agregar columna last_name: Agrega una columna last_name a la tabla students. Asigna a esta columna el mismo tipo de datos y longitud máxima que first_name y asegúrate de que tenga la restricción NOT NULL.
 
-### Paso 15: CREAR COLUMNA major_id
+`ALTER TABLE students ADD COLUMN last_name VARCHAR(50) NOT NULL;`
 
-La siguiente columna es para la especialidad. Dado que cada especialidad estará en otra tabla, esta columna será una clave foránea que la referenciará. Crea una columna en la tabla `students` llamada `major_id`, asígnale un tipo de datos `INT` por ahora. Regresaremos a establecer la clave foránea más adelante.
+4. **Acción**: Agregar columna major_id: Agrega una columna major_id a la tabla students. Asigna a esta columna el tipo de datos INT. Estableceremos la clave foránea más adelante.
 
-**Acción**
-- Escribe `ALTER TABLE students ADD COLUMN major_id INT;` en el indicador psql.
+`ALTER TABLE students ADD COLUMN major_id INT;`
 
-### Paso 16: CREAR COLUMNA gpa
+5. **Acción**: Agregar columna gpa: Agrega una columna gpa a la tabla students. Los datos en el CSV muestran que son decimales con una longitud de 2 y 1 número a la derecha del decimal, así que asígnale un tipo de datos NUMERIC(2,1).
 
-Crea la última columna, `gpa`. Los datos en el CSV muestran que son decimales con una longitud de 2 y 1 número a la derecha del decimal. Así que asígnale un tipo de datos `NUMERIC(2,1)`.
+`ALTER TABLE students ADD COLUMN gpa NUMERIC(2,1);`
 
-**Acción**
-- Escribe `ALTER TABLE students ADD COLUMN gpa NUMERIC(2,1);` en el indicador psql.
+Este conjunto de instrucciones te guiará en la creación de todas las columnas necesarias para la tabla `students` a partir de los datos en `students.csv`.
+Ahora vamos a agregar columnas. El archivo `students.csv` tiene cuatro campos; deberás crear una columna para cada uno de esos campos, así como una columna ID. 
 
-### Paso 17: VISUALIZAR DETALLES DE LA TABLA students
 
-Utiliza el comando de atajo para mostrar los detalles de la tabla `students`.
+### Paso 10: AÑADIR COLUMNAS A LA TABLA majors
 
-**Consejos**
-- Es el comando de atajo `\d`.
-- Escribe `\d students` en el indicador psql.
+Completa la tabla `majors`. 
 
-### Paso 18: AÑADIR COLUMNAS A LA TABLA majors
+1. **Acción**: Añade una columna `major_id` a esta tabla. Configúrala como un tipo `SERIAL` y hazla la PRIMARY KEY para esta tabla.
 
-La clave foránea aún falta. Primero, completa la tabla `majors`. Añade una columna `major_id` a esta tabla. Configúrala como un tipo `SERIAL` y hazla la PRIMARY KEY para esta tabla.
-
-**Acción**
 - Escribe `ALTER TABLE majors ADD COLUMN major_id SERIAL PRIMARY KEY;` en el indicador psql.
 
-### Paso 19: AÑADIR COLUMNA A LA TABLA majors
+2. **Acción**: Añade una columna a la tabla `majors` llamada `major`. Configúrala como `VARCHAR` con una longitud máxima de 50 y dale la restricción `NOT NULL`.
 
-Esta tabla solo tendrá una columna adicional para el nombre de la especialidad. Añade una columna a la tabla `majors` llamada `major`. Configúrala como `VARCHAR` con una longitud máxima de 50 y dale la restricción `NOT NULL`.
-
-**Acción**
 - Escribe `ALTER TABLE majors ADD COLUMN major VARCHAR(50) NOT NULL;` en el indicador psql.
 
-### Paso 20: ESTABLECER CLAVE FORÁNEA EN LA TABLA students
+### Paso 11: ESTABLECER CLAVE FORÁNEA EN LA TABLA students
 
 Configurar la columna `major_id` de la tabla `students` como una clave foránea que hace referencia a la columna `major_id` de la tabla `majors`.
 
-**Acción**
+1. **Acción**
 - Aquí tienes un ejemplo de cómo hacerlo:
   ```psql
   ALTER TABLE students ADD FOREIGN KEY (major_id) REFERENCES majors (major_id);
@@ -186,7 +160,7 @@ Agregue una columna course_id. Dale un tipo de SERIAL y conviértelo en la clave
 **Acción**
 - Escriba en el indicador psql:
  ```psql
-  ALTER TABLE coursesADD COLUMN course_id SERIAL PRIMARY KEY;
+  ALTER TABLE courses ADD COLUMN course_id SERIAL PRIMARY KEY;
  ```
 
 
