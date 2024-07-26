@@ -143,6 +143,7 @@ Completa la tabla `majors`.
 
 - Escribe `ALTER TABLE majors ADD COLUMN major VARCHAR(50) NOT NULL;` en el indicador psql.
 
+
 ### Paso 11: ESTABLECER CLAVE FORÁNEA EN LA TABLA students
 
 Configurar la columna `major_id` de la tabla `students` como una clave foránea que hace referencia a la columna `major_id` de la tabla `majors`.
@@ -153,15 +154,201 @@ Configurar la columna `major_id` de la tabla `students` como una clave foránea 
   ALTER TABLE students ADD FOREIGN KEY (major_id) REFERENCES majors (major_id);
   ```
 
-### Paso 21: CREAR COLUMNA course_id
+
+### Paso 12: CREAR COLUMNA course_id
 
 Agregue una columna course_id. Dale un tipo de SERIAL y conviértelo en la clave principal.
 
-**Acción**
+1. **Acción**
 - Escriba en el indicador psql:
  ```psql
   ALTER TABLE courses ADD COLUMN course_id SERIAL PRIMARY KEY;
  ```
 
 
+### Paso 13 Crear clave primaria compuesta
+
+Puede crear una clave primaria compuesta que utilice más de una columna como un par único.
+
+Ejemplo:
+`ALTER TABLE <nombre_tabla> ADD PRIMARY KEY(<nombre_columna>, <nombre_columna>);`
+1. **Acción:**
+    ```psql
+     ALTER TABLE majors_courses ADD PRIMARY KEY(major_id, course_id);
+     ```
+    
+
+### Paso 14 INSERT EN majors
+
+Sólo necesita el nombre de una especialización. La ID se agregará automáticamente. Agregue la primera especialización del archivo cursos.csv a la tabla de especialidades. Es un VARCHAR, así que asegúrese de poner el valor entre comillas simples. La especialidad es Administración de Bases de Datos.
+Utilice las palabras clave `INSERT INTO` y `VALUES`
+
+Ejemplo:
+`INSERT INTO <nombre_tabla>(<nombre_columna>) VALUES(<valor>);`
   
+   1. **Acción:**
+      ```psql
+      INSERT INTO majors(principales) VALUES('Administración de bases de datos');
+      ```
+
+
+### Paso 15 SELECT - FROM
+
+Utilice las palabras clave SELECT y FROM con * para ver todas las columnas y asegurarse de que se hayan insertado correctamente.
+  
+   Ejemplo:
+   `SELECT <columnas> FROM <nombre_tabla>;`
+ 
+   1. **Acción:**
+      ```psql
+      SELECT * FROM majors;
+      ```
+      ```psql
+      SELECT * FROM courses;
+      ```
+      ```psql
+      SELECT * FROM majors_courses;
+      ```
+      ```psql
+      SELECT * FROM students;
+      ```
+
+
+### Paso 16 touch insert_data.sh
+
+Añadir el resto de la información de a una por vez sería tedioso. Para facilitar este proceso, te recomiendo dividir la terminal. Puedes hacerlo siguiendo estos pasos,
+haz clic en el menú de "hamburguesa" en la parte superior izquierda de la ventana => ve al menú "Terminal" => haz clic en "Dividir terminal".
+
+1. **Acción**:
+
+ - Usa el comando `touch` para crear un archivo llamado `insert_data.sh`
+ 
+ - Asegúrate de estar en la `project` carpeta primero.
+
+ - Puedes llegar ingresando `cd ~/project` la terminal.
+
+
+### Paso 17 chmod +x insert_data.sh
+
+Debes tener dos terminales abiertas. Una conectada a PostgreSQL y otra para ingresar a la terminal de comandos. En la terminal de comandos, usa el `chmod` comando con el `+x` indicador para otorgarte nuevos permisos de ejecución de scripts.
+
+1. **Acción**:
+
+- Escribe `chmod +x insert_data.sh` en la terminal y pulsa enter.
+     
+- Asegúrese de que sea la terminal normal y no la psql.
+
+- Puede volver a iniciar sesión en psql conpsql `--username=freecodecamp --dbname=students`
+  
+
+### Paso 18 Add shebang
+
+Abra el archivo nuevo y agregue un "shebang" que use `bash ` en la parte superior. Se verá así: `#!/bin/bash`.
+
+1. **Acción**:
+
+- Añade el texto `#!/bin/bash` a tu `insert_data.sh` archivo.
+
+
+### Paso 19 Agregar Comentario
+
+Debajo de eso, agregue un comentario de una sola línea con el texto, `Script to insert data from courses.csv and students.csv into students database`.
+
+1. **Acción**:
+
+- Un comentario se vería así: `# <comment>`.
+
+- Añade `# Script to insert data from courses.csv and students.csv into students database` a continuación el "shebang" en tu `insert_data.sh` archivo.
+
+
+### Paso 20 Agregar cat courses.csv
+
+`cat` es un comando de terminal para imprimir el contenido de un archivo. Debes agregar toda la información del archivo `courses.csv` ya que necesitas el `major_id ` para insertar la información de los estudiantes.
+
+1. **Acción**:
+
+-  Añade `cat courses.csv` a tu `insert_data.sh` archivo debajo tu comentario.
+
+
+### Paso 21 ./insertar_datos.sh
+
+1. **Acción**:
+
+- Escribe `./insert_data.sh` en la terminal de comandos y pulsa enter.
+
+- Asegúrate de estar en la `project` carpeta primero.
+
+
+
+### Paso 22 Agregue while read
+
+En lugar de imprimir el contenido, puede redirigir esa salida en un bucle while para poder recorrer las filas una a la vez.
+Cada nueva línea se leerá en las variables `MAJOR` y `COURSE`, use `echo` para imprimir la variable `MAJOR`.
+  
+   1. **Acción:**
+
+      El bucle completo debería verse así:
+    
+      ```sh
+      cat courses.csv | while read MAJOR COURSE
+      do
+        echo $MAJOR
+      done
+      ```
+
+
+### Paso 23 Declarar -p IFS y Añadir IFS
+
+La variable `MAJOR` solo está capturando la primera palabra de cada línea. Esto se debe a la variable predeterminada `IFS` en bash. `IFS` significa "Internal Field Separator" (Separador de Campos Interno) y define cómo se separan los campos en bash. Para ver el valor actual de IFS, puedes usar el siguiente comando en la terminal:
+
+ 1. **Acción**:
+
+  - Ingresa `declare -p IFS` en la terminal.
+
+Entre los comandos `while`y `read`, establezca el `IFS` en una coma de la siguiente manera:`IFS=","`
+ 
+2. **Acción**:
+
+```sh
+cat courses.csv | while IFS="," read MAJOR COURSE
+do
+  echo $MAJOR
+done
+```
+
+
+### Paso 24 Agregar # Comentario
+
+Ayuda planificar lo que quieres que suceda. Para cada bucle, deberás añadir la especialidad `major` a la base de datos si aún no está allí. Lo mismo para el curso. Luego, añade una fila a la tabla `majors_courses`. Agrega estos comentarios de una línea en tu bucle en el siguiente orden: `get major_id`, `if not found`, `insert major`, `get new major_id`, `get course_id`, `if not found`, `insert course`, `get new course_id`, `insert into majors_courses`.
+
+1. **Acción**:
+
+- Aquí tienes un ejemplo de un comentario de una línea: `# <comentario>`.
+
+- Agrega los nueve comentarios de una línea sugeridos, cada uno en su propia línea, en el orden dado. Debería verse así:
+
+```sh
+do
+  # get major_id
+
+  # if not found
+
+  # insert major
+
+  # get new major_id
+
+  # get course_id
+
+  # if not found
+
+  # insert course
+
+  # get new course_id
+
+  # insert into majors_courses
+
+done
+```
+
+
+### Paso 25
