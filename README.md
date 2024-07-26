@@ -351,4 +351,21 @@ done
 ```
 
 
-### Paso 25
+### Paso 25 Añadir Variable PSQL
+
+Usaste el comando `psql` para iniciar sesión e interactuar con la base de datos. También puedes usarlo para ejecutar un solo comando y salir. Por encima de tu bucle, añade una variable `PSQL` que se vea así:
+
+ ```sh
+PSQL="psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c"
+```
+
+1. **Acción**:
+
+- Añade la variable sugerida entre tu primer comentario y el bucle.
+
+- La sección sugerida debería verse así:
+
+ ```sh
+PSQL="psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c"
+```
+
