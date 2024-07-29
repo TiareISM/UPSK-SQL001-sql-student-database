@@ -628,3 +628,25 @@ then
 fi
 ```
 
+
+### Paso 40 Añadir INSERT_COURSE_RESULT y if INSERT_COURSE_RESULT
+
+Debajo del comentario `insert course`, crea una variable `INSERT_COURSE_RESULT` que inserte el curso en la base de datos.
+
+1. **Acción**:
+
+- Así es cómo debería verse toda la línea: `INSERT_COURSE_RESULT=$($PSQL "INSERT INTO courses(course) VALUES('$COURSE')")`.
+
+Debajo de la variable que acabas de crear, añade una condición `if` que verifique si es así e imprime `Inserted into courses, $COURSE` usando `echo` en su área de declaraciones.
+
+2. **Acción**:
+
+- Todo debería verse así:
+
+```sh
+
+if [[ $INSERT_COURSE_RESULT == "INSERT 0 1" ]]
+then
+  echo "Inserted into courses, $COURSE"
+fi
+```
