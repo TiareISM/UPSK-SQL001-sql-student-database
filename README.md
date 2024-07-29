@@ -369,3 +369,262 @@ PSQL="psql -X --username=freecodecamp --dbname=students --no-align --tuples-only
 PSQL="psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c"
 ```
 
+
+### Paso 26 Agrega MAJOR_ID
+puedes consultar tu base de datos usando la variable `PSQL` de esta manera: `$($PSQL "<query_here>")`. El código entre paréntesis se ejecutará en un subshell, que es un proceso bash separado. Debajo del comentario `get major_id` en tu bucle, crea una variable `MAJOR_ID`. Establécela igual al resultado de una consulta que obtenga el `major_id` del `MAJOR` actual en el bucle. Asegúrate de poner tu variable `MAJOR` entre comillas simples.
+ 1. **Acción**:
+    ejemplo: `MAJOR_ID=$($PSQL "<query_here>")`,
+     ```sh
+     MAJOR_ID=$($PSQL "SELECT major_id FROM majors WHERE major='$MAJOR'")
+     ```
+
+
+### Paso 27 Agrega echo MAJOR_ID
+Debajo de la variable que acabas de crear, usa echo para imprimirla y así poder ver su valor cuando ejecutes el script.
+   1. **Acción**:
+      Agrega `echo $MAJOR_ID` debajo de la variable MAJOR_ID que creaste
+
+
+### Paso 28 Agregue if -z MAJOR_ID
+Debajo de su primer comentario `if not found`, agregue una condición `if` que verifique si la variable `MAJOR_ID` está vacía. Puede hacerlo con esta prueba: `[[ -z $MAJOR_ID ]]`. Coloque los dos comentarios siguientes en el área de declaraciones del `if`.
+   1. **Acción**:
+      Ejemplo:
+      if CONDITION
+      then
+      STATEMENTS
+      fi
+      ```sh
+      if [[ -z $MAJOR_ID ]]
+      then
+      # insert major
+      # get new major_id
+      fi
+      ```
+
+### Paso 29 Agregar INSERT_MAJOR_RESULT
+
+El bucle entrará en esta condición siempre que no se encuentre una especialidad (major). En este caso, debes insertar la especialidad y luego obtener el nuevo ID. Necesitarás el ID para insertar datos en la tabla majors_courses más adelante.
+
+Debajo de tu comentario de "insertar especialidad", crea una variable llamada INSERT_MAJOR_RESULT. Asigna a esta variable una consulta que inserte la especialidad actual en la base de datos. No olvides usar comillas simples alrededor del valor.
+
+**Ejemplo**:
+
+- Aquí tienes un ejemplo de cómo consultar la base de datos:
+
+```sh 
+   INSERT_MAJOR_RESULT=$($PSQL "<query_here>")
+```
+
+1. **Acción**:
+
+Así es como se ve la consulta completa:
+
+```sh
+INSERT INTO majors(major) VALUES('$MAJOR')
+```
+
+- Así es como debería verse toda la línea:
+
+```sh
+INSERT_MAJOR_RESULT=$($PSQL "INSERT INTO majors(major) VALUES('$MAJOR')")
+```
+
+2. **Acción**:
+
+- Agrega `echo $INSERT_MAJOR_RESULT` justo debajo de donde lo creaste.
+
+
+### Paso 30 cp courses.csv
+
+Cree algunos datos de prueba. En la terminal, usa el comando `cp` para copiar el archivo courses.csv a un nuevo archivo llamado `courses_test.csv`.
+
+- Aquí tienes un ejemplo: `cp <filename> <new_name>`.
+
+1. **Acción**:
+
+- Escribe `cp courses.csv courses_test.csv` en la terminal y presiona enter.
+
+- Asegúrate de estar utilizando la terminal bash y no la de psql.
+
+
+2. **Acción**:
+
+- Elimina todas las líneas excepto las primeras cinco del archivo `courses_test.csv`.
+
+- El `ourses_test.csv` carchivo debería verse así:
+
+```sh
+
+major,course
+Database Administration,Data Structures and Algorithms
+Web Development,Web Programming
+Database Administration,Database Systems
+Data Science,Data Structures and Algorithms
+```
+
+
+### Paso 31 Cambia a cat courses_test.csv
+
+En el script `insert_data.sh`, cambia tu comando `cat` para que itere a través del archivo de prueba en lugar del archivo completo.
+
+1. **Acción**:
+
+- La línea sugerida debería verse así:
+
+```sh
+
+cat courses_test.csv | while IFS="," read MAJOR COURSE
+```
+
+### Paso 32 Elimina echo MAJOR_ID
+
+Parece que encontró un ID que ya estaba en la base de datos dos veces e insertó tres nuevos elementos en la base de datos. Ya no necesitas imprimir el ID, así que elimina la línea `echo $MAJOR_ID`.
+
+1. **Acción**:
+
+- Elimina la línea `echo $MAJOR_ID`.
+
+
+### Paso 33 SELECT * FROM majors
+
+En el prompt de `psql`, utiliza SELECT para ver todos los datos de la tabla `majors` y así comprobar qué agregó el script.
+
+1. **Acción**:
+
+- Escribe `SELECT * FROM majors;` en el prompt de `psql`.
+
+
+### Paso 34 TRUNCATE majors
+
+Puedes usar TRUNCATE para eliminar todos los datos de una tabla. En el prompt de `psql`, intenta eliminar todos los datos de la tabla majors ingresando `TRUNCATE majors;`.
+
+1. **Acción**:
+
+- Escribe `TRUNCATE majors;` en el prompt de `psql`.
+
+
+### Paso 35 TRUNCATE majors, students, majors_courses
+
+Dice que "no se puede truncar una tabla referenciada en una restricción de clave externa". Las tablas `students` y `majors_courses` utilizan el `major_id` de `majors` como clave externa. Por lo tanto, si deseas eliminar los datos de `majors`, debes eliminar los datos de esas dos tablas al mismo tiempo. Usa `TRUNCATE` para eliminar los datos de las tres tablas. Separa las tablas con comas.
+
+1. **Acción**:
+
+- Ingresa `TRUNCATE majors, students, majors_courses;` en el prompt de `psql`.
+
+2. **Acción**:
+
+- Mira todos los datos en la tabla `majors`, `students`, `majors_courses` y `courses` para asegurarte de que estén vacías.
+
+-Ejemplo para cada tabla:
+
+-  `SELECT * FROM majors;` en el prompt de psql.
+
+
+### Paso 36 Agregar if major
+
+No querrás agregar la primera línea del archivo CSV a la base de datos, ya que solo contiene títulos. En tu script, añade una condición `if` al principio de tu bucle que verifique si `$MAJOR != major`. Coloca todo el código y los comentarios existentes en tu bucle dentro del área de las declaraciones del `if` para que solo se ejecute si no es la primera línea.
+
+1. **Acción**:
+   
+- Aquí tienes un ejemplo de una condición `if`:
+
+```sh
+if [[ CONDITION ]]
+then
+  STATEMENTS
+fi
+```
+
+- Tu área del bucle debería verse así:
+
+```sh
+do
+  if [[ $MAJOR != major ]]
+  then
+    # obtener major_id
+    MAJOR_ID=$($PSQL "SELECT major_id FROM majors WHERE major='$MAJOR'")
+
+    # si no se encuentra
+    if [[ -z $MAJOR_ID ]]
+    then
+      # insertar major
+      INSERT_MAJOR_RESULT=$($PSQL "INSERT INTO majors(major) VALUES('$MAJOR')")
+      echo $INSERT_MAJOR_RESULT
+
+      # obtener nuevo major_id
+
+    fi
+
+    # obtener course_id
+
+    # si no se encuentra
+
+    # insertar course
+
+    # obtener nuevo course_id
+
+    # insertar en majors_courses
+
+  fi
+done
+```
+
+
+### Paso 37 Elimina echo INSERT_MAJOR_RESULT
+
+Elimina la línea donde imprimes `INSERT_MAJOR_RESULT`.
+
+1. **Acción**:
+
+Elimina la línea `echo $INSERT_MAJOR_RESULT`.
+
+
+### Paso 38 Añadir if INSERT_MAJOR_RESULT
+
+Para que sea más informativo debajo de tu variable `INSERT_MAJOR_RESULT`, añade una declaración `if` que verifique si la variable es igual a `INSERT 0 1`, que era lo que estaba imprimiendo. Usa echo para imprimir `"Inserted into majors, $MAJOR"` en el área de declaraciones del `if`.
+
+1. **Acción**:
+
+- Todo debería verse así:
+
+```sh
+if [[ $INSERT_MAJOR_RESULT == "INSERT 0 1" ]]
+then
+  echo "Inserted into majors, $MAJOR"
+fi
+```
+
+
+### Paso 39 Añadir MAJOR_ID, COURSE_ID y if -z COURSE_ID
+
+Debajo de tu comentario `get new major_id`, establece la variable `MAJOR_ID`.
+
+1. **Acción**:
+
+- Así debería verse toda la línea: `MAJOR_ID=$($PSQL "SELECT major_id FROM majors WHERE major='$MAJOR'")`
+
+Asegúrate de que esté en el área de declaraciones del `if [[ -z $MAJOR_ID ]]`.
+
+Debajo de tu comentario `get course_id`, añade una variable `COURSE_ID` que obtenga el `course_id` de la base de datos. Recuerda que tu variable `COURSE` tendrá el curso actual en el bucle.
+
+2. **Acción**:
+
+- Así debería verse toda la línea: `COURSE_ID=$($PSQL "SELECT course_id FROM courses WHERE course='$COURSE'")`.
+
+Debajo del segundo comentario `if not found`, añade una declaración `if` que verifique si la consulta está vacía para que puedas insertar el curso si es necesario. Coloca los comentarios existentes `insert course` y `get new course_id` en el área de declaraciones del `if`.
+
+3. **Acción**:
+
+- Aquí es cómo debería verse:
+
+```sh
+
+if [[ -z $COURSE_ID ]]
+then
+  # insertar curso
+
+  # obtener nuevo course_id
+
+fi
+```
+
