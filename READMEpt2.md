@@ -158,5 +158,16 @@ Para devolver filas donde el `gpa` no sea igual a un valor específico, usa el o
 
 - Ingresa `SELECT first_name, last_name, gpa FROM students WHERE gpa != 4.0;` en el prompt de psql.
 
-### Paso 13 
 
+### Paso 13 Añadir echo del resultado de la consulta
+
+En tu archivo `student_info.sh`, añade un comando echo al final que imprima lo que la frase anterior solicita. Coloca comillas dobles alrededor de esto de la siguiente manera: `echo "$($PSQL "<consulta_aquí>")"`. Esto hará que la salida no esté toda en una sola línea.
+
+1. **Acción**:
+
+- Añade `echo "$($PSQL "<consulta_aquí>")" al final del archivo student_info.sh`.
+
+- Añade `echo "$($PSQL "SELECT first_name, last_name, gpa FROM students WHERE gpa = 4.0")"` al final del archivo `student_info.sh`.
+
+
+### Paso 14 
