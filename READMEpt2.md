@@ -119,16 +119,16 @@ echo -e "\nFirst name, last name, and GPA of students with a 4.0 GPA:"
 ```
 
 
-### Paso 12 psql SQL Consultas
+### Paso 12 PSQL Consultas
 
 SQL significa "Structured Query Language" (Lenguaje de Consulta Estructurado). Es el lenguaje que has estado usando para gestionar tus bases de datos relacionales. 
-En el prompt de `psql`, visualiza todos los datos en la tabla students como lo has hecho muchas veces.
+En el prompt de `psql`, visualiza todos los datos en la tabla students como lo has hecho muchas veces:
 
 1. **Acción**:
 
 - Ingresa `SELECT * FROM students;` en el prompt de psql.
 
-Para ver solo una columna específica de una tabla.
+Para ver solo una columna específica de una tabla:
 
 2. **Acción**:
 
@@ -140,19 +140,19 @@ Para devolver múltiples columnas, sepáralas con comas en tu consulta.
 
 - Ingresa `SELECT first_name, last_name, gpa FROM students;` en el prompt de psql.
 
-Para devolver solo las filas que cumplan con una condición específica, agrega ` WHERE <condición>` a tu consulta.
+Para devolver solo las filas que cumplan con una condición específica, agrega ` WHERE <condición>` a tu consulta:
 
 4. **Acción**:
 
 - Usa `WHERE gpa < 2.5`.
 
-Para mostrar filas donde el `gpa` sea mayor o igual a un valor específico, usa el operador `>=`. 
+Para mostrar filas donde el `gpa` sea mayor o igual a un valor específico, usa el operador `>=`:
 
 5. **Acción**:
 
 - Usa `WHERE gpa >= 3.8`.
 
-Para devolver filas donde el `gpa` no sea igual a un valor específico, usa el operador `!=`.
+Para devolver filas donde el `gpa` no sea igual a un valor específico, usa el operador `!=`:
 
 6. **Acción**:
 
@@ -169,5 +169,231 @@ En tu archivo `student_info.sh`, añade un comando echo al final que imprima lo 
 
 - Añade `echo "$($PSQL "SELECT first_name, last_name, gpa FROM students WHERE gpa = 4.0")"` al final del archivo `student_info.sh`.
 
+2. **Acción**:
 
-### Paso 14 
+- Ejecutar el script `./student_info.sh` en la terminal de comandos.
+
+
+### Paso 14 Añadir echo courses before D
+
+Añade otra declaración `echo` al final del script.  Haz que imprima `All course names whose first letter is before 'D' in the alphabet:`.  Pon un salto de línea delante de esta frase, como en la primera oración.
+
+1. **Acción**:
+
+- Al final del `student_info.sh` archivo, agregue lo siguiente:
+
+```sh
+echo -e "\nAll course names whose first letter is before 'D' in the alphabet:"
+```
+
+
+### Paso 15 PSQL Consultas
+
+Practica primero.
+
+Para visualizar todos los datos en la tabla majors:
+
+1. **Acción**:
+
+- `SELECT * FROM majors;`.
+
+Usa el = para ver todos los majors nombrados Game Design. La condición que necesitas es `major = 'Game Design'`:
+
+2. **Acción**:
+
+- `Ingresa SELECT * FROM majors WHERE major = 'Game Design';`
+
+Para visualizar todas las filas que no sean iguales a Game Design. La condición que necesitas es `major != 'Game Design'`:
+
+3. **Acción**:
+
+- Ingresa `SELECT * FROM majors WHERE major != 'Game Design';`.
+
+Para ver las especialidades que vienen después alfabéticamente. La condición que necesitas es `major > 'Game Design'`:
+
+4. **Acción**:
+
+- Ingresa `SELECT * FROM majors WHERE major > 'Game Design';`.
+
+Game Design no se incluyó en los resultados porque no es > 'Game Design'. Inténtalo con el operador de mayor o igual que. La condición que necesitas es `major >= 'Game Design'`:
+
+5. **Acción**:
+
+- Ingresa `SELECT * FROM majors WHERE major >= 'Game Design';`
+
+Ahora, ve los majors que vienen antes de G. La condición que necesitas es `major < 'G'`:
+
+6. **Acción**:
+
+- Ingresa `SELECT * FROM majors WHERE major < 'G';`.
+
+
+### Paso 16 Agregar resultado de consulta con echo
+
+En el script, agrega un `echo` al final para imprimir la información sugerida como lo hiciste antes. Asegúrate de usar comillas dobles donde sea necesario.
+
+1. **Acción**:
+
+- Agregar al final del archivo `student_info.sh`:
+
+```sh
+echo "$($PSQL "SELECT course FROM courses WHERE course < 'D'")"
+```
+
+2. **Acción**:
+
+- Ejecuta el script `student_info.sh` en la terminal de comandos.
+
+
+### Paso 17  Agregar echo 
+
+Agrega otra oración como las anteriores que diga: `First name, last name, and GPA of students whose last name begins with an 'R' or after and have a GPA greater than 3.8 or less than 2.0:`
+
+1. **Acción**:
+
+- Al final del archivo `student_info.sh`, agrega esto:
+
+```sh
+echo -e "\nFirst name, last name, and GPA of students whose last name begins with an 'R' or after and have a GPA greater than 3.8 or less than 2.0:"
+```
+
+
+### Paso 18 PSQL Consultas
+
+Para ver todos los datos en la tabla de estudiantes. Usa las palabras clave `SELECT` y `FROM` con `*` para ver todos los datos.
+
+1. **Acción**:
+
+- Ingresa `SELECT * FROM students;`.
+
+Devuelve las filas de los estudiantes cuyo apellido esté antes de la M en el alfabeto. La condición que es `last_name < 'M'`:
+
+2. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE last_name < 'M';`.
+
+Puedes usar múltiples condiciones después de `WHERE` con `AND` u `OR`, entre otros. Solo agrega la palabra clave y otra condición:
+
+3. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE last_name < 'M' OR gpa = 3.9;`
+
+Ingresa el comando anterior, pero usa AND para ver solo estudiantes que cumplan ambas condiciones:
+
+4. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE last_name < 'M' AND gpa = 3.9;`.
+
+Ingresa el comando anterior, pero agrega una tercera condición de `OR gpa < 2.3`:
+
+5. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE last_name < 'M' AND gpa = 3.9 OR gpa < 2.3;`.
+
+Puedes agrupar condiciones juntas con paréntesis así: `WHERE <condition_1> AND (<condition_2> OR <condition_2>)`. Esto solo devolvería filas donde `<condition_1> ` es verdadera y una de las otras también es verdadera. Ve a los estudiantes cuyo apellido es antes de la M que tienen un `GPA de 3.9 o menor a 2.3`:
+
+6. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE last_name < 'M' AND (gpa = 3.9 OR gpa < 2.3);`.
+
+
+### Paso 19 Agrega resultado de la consulta con echo
+
+Dos estudiantes cumplen con esas condiciones. Regresa al archivo de información de los estudiantes y agrega un comando echo al final para imprimir las filas sugeridas. Agrega `echo "$($PSQL "<query_here>")"` al final del archivo `student_info.sh`, excepto con la consulta correcta.
+
+1. **Acción**: 
+
+- Agrega:
+
+```sh
+echo "$($PSQL "SELECT first_name, last_name, gpa FROM students WHERE last_name >= 'R' AND (gpa > 3.8 OR gpa < 2.0)")"
+```
+
+2. **Acción**:
+
+- Ejecuta el script `student_info.sh` en la terminal de comandos.
+
+
+### Paso 20 Agrega echo
+
+Agrega otro comando `echo`, como los anteriores, con una oración que diga: `Last name of students whose last name contains a case insensitive 'sa' or have an 'r' as the second to last letter:`
+
+1. **Acción**:
+
+- Al final del archivo `student_info.sh`, agrega esto:
+
+```sh
+echo -e "\nLast name of students whose last name contains a case insensitive 'sa' or have an 'r' as the second to last letter:"
+```
+
+
+### Paso 21 PSQL Consultas
+
+Empieza por ver todos los datos de la tabla `courses`. Usa los comandos `SELECT` y `FROM` con `*`:
+
+1. **Acción**:
+
+- Ingresa `SELECT * FROM courses;`.
+
+Puedes usar `LIKE` para encontrar patrones en el texto como este: `WHERE <column> LIKE '<pattern>'`. Un guion bajo `(_)` en un patrón devolverá filas que tengan cualquier carácter en esa posición. Visualiza las filas en esta tabla con un nombre de curso que coincida con el patrón `_lgorithms`:
+
+2. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course LIKE '_lgorithms';`.
+
+Otro carácter de patrón es `%`. Significa que puede haber cualquier cosa allí. Para encontrar nombres que comiencen con `W`, podrías usar `W%`. Visualiza los cursos que terminan en `lgorithms`:
+
+3. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course LIKE '%lgorithms';`.
+
+Intenta ver los cursos que comienzan con `Web`:
+
+4. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course LIKE 'Web%';`.
+
+Combina los dos caracteres de patrón para mostrar los cursos que tienen una segunda letra `e`:
+
+5. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course LIKE '_e%';`.
+
+ Intenta ver los cursos con un espacio en sus nombres. El patrón que quieres es `% %`:
+
+ 6. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course LIKE '% %';`.
+
+Puedes usar `NOT LIKE` para encontrar cosas que no coincidan con un patrón. Visualiza los cursos que no contienen un espacio:
+
+7. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course NOT LIKE '% %';`.
+
+Intenta encontrar los que contienen una `A`. El patrón que quieres es `%A%`:
+
+8. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course LIKE '%A%';`.
+
+ `ILIKE` ignorará el caso de las letras al hacer coincidencias. Úsalo para ver los cursos con una 'A' o 'a': 
+
+ 9. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course ILIKE '%A%';`.
+
+Puedes poner `NOT` delante de `ILIKE` también. Úsalo para ver los cursos que no contienen una 'A' o 'a':
+
+10. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course NOT ILIKE '%A%';`.
+
+Combina estos como cualquier otra condición. Aquí tienes un ejemplo: `SELECT * FROM courses WHERE course NOT ILIKE '<pattern>' AND course LIKE <pattern>;`: 
+
+11. **Acción**:
+
+- Ingresa `SELECT * FROM courses WHERE course NOT ILIKE '%A%' AND course LIKE '% %';`.
+
+
+### Paso 22 
