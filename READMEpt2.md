@@ -396,4 +396,14 @@ Combina estos como cualquier otra condición. Aquí tienes un ejemplo: `SELECT *
 - Ingresa `SELECT * FROM courses WHERE course NOT ILIKE '%A%' AND course LIKE '% %';`.
 
 
-### Paso 22 
+### Paso 22 Agregar echo
+
+En tu script `student_info.sh`, añade una declaración `echo` al final, similar a las demás, para imprimir los resultados de la consulta sugerida.
+
+1. **Acción**:
+
+- Añade al final del archivo `student_info.sh`: 
+
+```sh
+echo "$($PSQL "SELECT last_name FROM students WHERE last_name ILIKE '%sa%' OR last_name LIKE '%r_'")"
+```
