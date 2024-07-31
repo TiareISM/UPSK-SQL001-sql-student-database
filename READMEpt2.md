@@ -407,3 +407,284 @@ En tu script `student_info.sh`, añade una declaración `echo` al final, similar
 ```sh
 echo "$($PSQL "SELECT last_name FROM students WHERE last_name ILIKE '%sa%' OR last_name LIKE '%r_'")"
 ```
+
+2. **Acción**:
+
+- Ejecuta el script `./student_info.sh` en la terminal de comandos.
+
+
+### Paso 23 Agregar echo
+
+Añade otra declaración `echo` al final, como las demás. Haz que esta diga: `"First name, last name, and GPA of students who have not selected a major and either their first name begins with 'D' or they have a GPA greater than 3.0:"`
+
+1. **Acción**:
+
+- Al final del archivo `student_info.sh`, añade esto:
+
+```sh
+echo -e "\nFirst name, last name, and GPA of students who have not selected a major and either their first name begins with 'D' or they have a GPA greater than 3.0:"
+```
+
+
+### Paso 24 PSQL Consultas
+
+Comienza revisando todos los datos en la tabla de estudiantes:
+
+1. **Acción**:
+
+- Ingresa `SELECT * FROM students;`.
+
+Todos los campos que están vacíos o en blanco son nulos. Puedes acceder a ellos usando IS NULL como condición así: WHERE <column> IS NULL. Visualiza a los estudiantes que no tienen GPA. La condición que necesitas es `gpa IS NULL`:
+
+2. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE gpa IS NULL;`
+
+Puedes usar IS NOT NULL para ver filas que no son nulas. Visualiza toda la información de los estudiantes que tienen GPA: 
+
+3. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE gpa IS NOT NULL;`
+
+Visualiza toda la información de los estudiantes que no han elegido una especialidad:
+
+4. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE major_id IS NULL;`
+
+Visualiza a los estudiantes que no tienen una especialidad, pero no incluyas a los estudiantes sin GPA, la condición que necesitas es `major_id IS NULL AND gpa IS NOT NULL`:
+
+5. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE major_id IS NULL AND gpa IS NOT NULL;`
+
+Visualiza a los estudiantes que no tienen una especialidad ni GPA, la condición que necesitas es `major_id IS NULL AND gpa IS NULL`:
+
+6. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE major_id IS NULL AND gpa IS NULL;`
+
+
+### Paso 25 Agregar echo result
+
+En el script, agrega un comando echo al final para imprimir los resultados que busca la oración. Añade `echo "$($PSQL "<query_here>")"`
+
+1. **Acción**:
+
+- Añade:
+
+```sh
+echo "$($PSQL "SELECT first_name, last_name, gpa FROM students WHERE major_id IS NULL AND (first_name LIKE 'D%' OR gpa > 3.0)")"
+```
+
+2. **Acción**:
+
+- Ejecutar el script `./student_info.sh`
+
+
+### Paso 26 Agregar echo first five courses
+
+Hay tres de ellos. Agrega otra oración, como las demás, que diga: `Course name of the first five courses, in reverse alphabetical order, that have an 'e' as the second letter or end with an 's':`
+
+1. **Acción**:
+
+- Al final del archivo `student_info.sh`, añade esto:
+
+```sh
+echo -e "\nCourse name of the first five courses, in reverse alphabetical order, that have an 'e' as the second letter or end with an 's':"
+```
+
+
+### Paso 27 PSQL Consultas
+
+Puedes especificar el orden en el que deseas que se muestren tus resultados añadiendo `ORDER BY <column_name>` al final de una consulta. Aquí tienes un ejemplo: `SELECT <columns> FROM <table> ORDER BY <column>;`:
+
+1. **Acción**:
+
+- Ingresa `SELECT * FROM students ORDER BY gpa;`.
+
+Eso puso los GPA más bajos en la parte superior. Al usar ORDER BY, se ordenará de forma ascendente (ASC) por defecto. Agrega DESC (descendente) al final de la última consulta para poner los más altos en la parte superior:
+
+2. **Acción**:
+
+- Ingresa `SELECT * FROM students ORDER BY gpa DESC;`.
+
+Puedes agregar más columnas al orden separándolas con una coma así: `ORDER BY <column_1>, <column_2>`. Cualquier valor coincidente en la primera columna ordenada se ordenará por la siguiente:
+
+3. **Acción**:
+
+- Ingresa `SELECT * FROM students ORDER BY gpa DESC, first_name;`.
+
+Puedes agregar `LIMIT <number>` al final de la consulta para obtener solo la cantidad que deseas:
+
+4. **Acción**:
+
+- Ingresa `SELECT * FROM students ORDER BY gpa DESC, first_name LIMIT 10;`.
+
+El orden de las palabras clave en tu consulta importa. No puedes poner LIMIT antes de ORDER BY, ni ninguna de ellas antes de WHERE.  Visualiza el mismo número de estudiantes, en el mismo orden, pero no incluyas a los que no tienen un GPA:
+
+5. **Acción**:
+
+- Ingresa `SELECT * FROM students WHERE gpa IS NOT NULL ORDER BY gpa DESC, first_name LIMIT 10;`.
+
+
+### Paso 28 Agregue echo result
+
+En el script, añade el comando echo para imprimir las filas que la sentencia solicita.
+
+1. **Acción**:
+
+- Agregue:
+
+```sh
+echo "$($PSQL "SELECT course FROM courses WHERE course LIKE '_e%' OR course LIKE '%s' ORDER BY course DESC LIMIT 5")"
+```
+
+2. **Acción**:
+
+- Ejecuta el script `./student_info.sh` en la terminal de comandos.
+
+
+### Paso 29 Agregar echo
+
+😎 Agrega otro comando echo al final del script como los demás. Haz que este diga: Promedio de GPA de todos los estudiantes redondeado a dos decimales
+
+1. **Acción**:
+
+- Agregue:
+
+```sh
+echo -e "\nAverage GPA of all students rounded to two decimal places:"
+```
+
+
+### Paso 30 PSQL Consultas
+
+Existen varias funciones matemáticas que puedes usar con columnas numéricas. Una de ellas es MIN, que puedes usar al seleccionar una columna de esta manera: SELECT MIN(<columna>) FROM <tabla>. Encontrará el valor más bajo en la columna: 
+
+1. **Acción**:
+
+- Ingresa `SELECT MIN(gpa) FROM students;`.
+
+Otra función es MAX, úsala para ver el GPA más alto de la misma tabla:
+
+2. **Acción**:
+
+- Ingresa `SELECT MAX(gpa) FROM students;`.
+
+Usa la función SUM para averiguar qué suma todos los valores de la columna major_id en la tabla students:
+
+3. **Acción**:
+
+- Ingresa `SELECT SUM(major_id) FROM students;`.
+
+AVG te dará el promedio de todos los valores en una columna:
+
+4. **Acción**:
+
+- Ingresa `SELECT AVG(major_id) FROM students;`.
+
+Puedes redondear los decimales hacia arriba o hacia abajo al número entero más cercano con CEIL y FLOOR. Coloca AVG(major_id) dentro de los paréntesis de la función CEIL:
+
+5. **Acción**:
+
+- Ingresa `SELECT CEIL(AVG(major_id)) FROM students;`.
+
+Puedes redondear un número al entero más cercano con ROUND:
+
+6. **Acción**:
+
+-  Ingresa `SELECT ROUND(AVG(major_id)) FROM students;`.
+
+Puedes redondear a un número específico de decimales añadiendo una coma y el número a ROUND, así: ROUND(<número_a_redondear>, <lugares_decimales>):
+
+7. **Acción**:
+
+- Ingresa `SELECT ROUND(AVG(major_id), 5) FROM students;`.
+
+
+### Paso 31 Agregar echo result
+
+Agrega el comando para imprimirlo.
+
+1. **Acción**:
+
+- Agrega:
+
+```sh
+echo "$($PSQL "SELECT ROUND(AVG(gpa), 2) FROM students")"
+```
+
+2. **Acción**:
+
+- Ejecutar el script `./student_info.sh` en la terminal de comandos.
+
+
+### Paso 32 Agregar echo
+
+Agregar el siguiente comando: `Major ID, total number of students in a column named 'number_of_students', and average GPA rounded to two decimal places in a column name 'average_gpa', for each major ID in the students table having a student count greater than 1:`
+
+1. **Acción**:
+
+- agrega:
+
+```sh
+echo -e "\nMajor ID, total number of students in a column named 'number_of_students', and average GPA rounded to two decimal places in a column name 'average_gpa', for each major ID in the students table having a student count greater than 1:"
+```
+
+
+### Paso 33 PSQL Consultas
+
+Otra función es COUNT. Puedes usarla de la siguiente manera: `COUNT(<columna>)`. Esto te dirá cuántas entradas hay en una tabla para la columna:
+
+1. **Acción**:
+
+- Ingresa: `SELECT COUNT(*) FROM majors;`
+
+Usando el mismo método, verifica cuántos estudiantes tienes:
+
+2. **Acción**:
+
+- Ingresa `SELECT COUNT(*) FROM students;`.
+
+Visualiza el conteo de la columna major_id en la tabla de estudiantes para ver cuántos de tus estudiantes han elegido una especialidad:
+
+3. **Acción**:
+
+- Ingresa `SELECT COUNT(major_id) FROM students;`.
+
+DISTINCT es una función que te mostrará solo los valores únicos. Puedes usarla de la siguiente manera: `DISTINCT(<columna>)`:
+
+4. **Acción**:
+
+- Ingresa `SELECT DISTINCT(major_id) FROM students;`.
+
+ Puedes obtener los mismos resultados con GROUP BY. Aquí hay un ejemplo de cómo usarlo: `SELECT <columna> FROM <tabla> GROUP BY <columna>`:
+
+ 5. **Acción**:
+
+- Ingresa `SELECT major_id FROM students GROUP BY major_id;`.
+
+La salida fue la misma que DISTINCT, pero con GROUP BY puedes agregar cualquiera de las funciones de agregación (MIN, MAX, COUNT, etc.) para encontrar más información. Por ejemplo, si quisieras ver cuántos estudiantes hay en cada especialidad podrías usar `SELECT COUNT(*) FROM students GROUP BY major_id`:
+
+6. **Acción**:
+
+- Ingresa `SELECT major_id, COUNT(*) FROM students GROUP BY major_id;`.
+
+Al usar GROUP BY, cualquier columna en el área SELECT debe estar incluida en el área GROUP BY. Otras columnas deben usarse con cualquiera de las funciones de agregación (MAX, AVG, COUNT, etc.). Visualiza los valores únicos de major_id con GROUP BY nuevamente, pero ve cuál es el GPA más bajo en cada uno de ellos:
+
+7. **Acción**:
+
+- Ingresa `SELECT major_id, MIN(gpa) FROM students GROUP BY major_id;`.
+
+Introduce la misma consulta, pero agrega una columna que te muestre el GPA más alto en cada especialidad también:
+
+8. **Acción**:
+
+- Ingresa `SELECT major_id, MIN(gpa), MAX(gpa) FROM students GROUP BY major_id;`.
+
+Otra opción con GROUP BY es HAVING. Puedes agregarlo al final de la consulta así: `SELECT <columna> FROM <tabla> GROUP BY <columna> HAVING <condición>`. La condición debe ser una función de agregación con una prueba. Un ejemplo podría ser usar `HAVING COUNT(*) > 0`:
+
+9. **Acción**:
+
+- Ingresa `SELECT major_id, MIN(gpa), MAX(gpa) FROM students GROUP BY major_id HAVING MAX(gpa) = 4.0;`.
