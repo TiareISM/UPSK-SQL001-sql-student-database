@@ -688,3 +688,27 @@ Otra opción con GROUP BY es HAVING. Puedes agregarlo al final de la consulta as
 9. **Acción**:
 
 - Ingresa `SELECT major_id, MIN(gpa), MAX(gpa) FROM students GROUP BY major_id HAVING MAX(gpa) = 4.0;`.
+
+Puedes renombrar una columna con AS así: `SELECT <columna> AS <nuevo_nombre_de_columna>`. Introduce el mismo comando, pero renombra la columna 'min a min_gpa':
+
+10. **Acción**:
+
+- Ingresa `SELECT major_id, MIN(gpa) AS min_gpa, MAX(gpa) FROM students GROUP BY major_id HAVING MAX(gpa) = 4.0;`.
+
+Introduce el mismo comando, pero renombra también la columna max a max_gpa: 
+
+11. **Acción**:
+
+- Ingresa `SELECT major_id, MIN(gpa) AS min_gpa, MAX(gpa) AS max_gpa FROM students GROUP BY major_id HAVING MAX(gpa) = 4.0;`.
+
+Visualiza major_id y el número de estudiantes en cada major_id en una columna llamada 'number_of_students':
+
+12. **Acción**:
+
+- Ingresa `SELECT major_id, COUNT(*) AS number_of_students FROM students GROUP BY major_id;`.
+
+Usa HAVING con la última consulta para mostrar solo las filas con menos de ocho estudiantes en la especialidad:
+
+13. **Acción**:
+
+- Ingresa `SELECT major_id, COUNT(*) AS number_of_students FROM students GROUP BY major_id HAVING COUNT(*) < 8;`.
