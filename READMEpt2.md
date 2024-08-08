@@ -712,3 +712,81 @@ Usa HAVING con la última consulta para mostrar solo las filas con menos de ocho
 13. **Acción**:
 
 - Ingresa `SELECT major_id, COUNT(*) AS number_of_students FROM students GROUP BY major_id HAVING COUNT(*) < 8;`.
+
+
+### Paso 34  Agrega echo para mostrar el resultado de la consulta
+
+Agregar el comando `echo "$($PSQL "<consulta_aquí>")"` al final del archivo `student_info.sh` para imprimir los resultados sugeridos. 
+
+1. **Acción**:
+
+- Agrega
+
+```sh
+echo "$($PSQL "SELECT major_id, COUNT(*) AS number_of_students, ROUND(AVG(gpa),2) AS average_gpa FROM students GROUP BY major_id HAVING COUNT(*) > 1")"
+```
+
+2. **Acción**:
+
+- Ejecutar el script `./student_info.sh` en la terminal de comandos.
+
+
+### Paso 35 Agregar echo
+
+Agrega un comando `echo` a tu script, como los otros, que imprima: `List of majors, in alphabetical order, that either no student is taking or has a student whose first name contains a case insensitive 'ma':`
+
+
+1. **Acción**:
+
+- Al final del archivo `student_info.sh`, agrega esto:
+
+```sh
+echo -e "\nList of majors, in alphabetical order, that either no student is taking or has a student whose first name contains a case insensitive 'ma':"
+```
+
+
+### Paso 36 Comandos JOIN
+
+**psql students FULL JOIN majors:**
+
+La unión FULL JOIN incluirá todas las filas de ambas tablas, tengan o no una fila que use esa clave foránea en la otra. A partir de ahí, podrías usar cualquiera de los métodos anteriores para filtrar, agrupar, ordenar, etc.
+
+
+1. **Acción**:
+
+- Si deseas ver el nombre de una especialidad que un estudiante está tomando, necesitas unir las dos tablas en una. Aquí tienes un ejemplo de cómo hacerlo: `SELECT * FROM <table_1> FULL JOIN <table_2> ON <table_1>.<foreign_key_column> = <table_2>.<foreign_key_column>;`
+
+- Ingresa: `SELECT * FROM students FULL JOIN majors ON students.major_id = majors.major_id;`
+
+
+**psql students LEFT JOIN majors:**
+
+Una LEFT JOIN obtiene todas las filas de la tabla izquierda, pero solo las filas de la tabla derecha que están vinculadas desde la izquierda. Une las tablas students y majors con una LEFT JOIN. Usa primero la tabla students cuando sea aplicable.
+
+2. **Acción**:
+
+- Escribe: `SELECT * FROM students LEFT JOIN majors ON students.major_id = majors.major_id;`
+
+
+**psql students RIGHT JOIN majors:**
+
+Una RIGHT JOIN devuelve todas las filas de la tabla de la derecha (la tabla después de JOIN), y las filas correspondientes de la tabla de la izquierda (la tabla antes de JOIN).
+
+3. **Acción**:
+
+- Une las mismas dos tablas con una RIGHT JOIN esta vez.
+
+- Escribe: `SELECT * FROM students RIGHT JOIN majors ON students.major_id = majors.major_id;`
+
+
+**psql students INNER JOIN majors:**
+
+Una INNER JOIN devuelve solo las filas donde hay coincidencia en ambas tablas. Es decir, solo se incluyen en el resultado las filas que tienen correspondencias en ambas tablas basadas en la condición de JOIN.
+
+4. **Acción**:
+
+- Une las tablas students y majors con una INNER JOIN. Usa primero la tabla students cuando sea aplicable.
+
+- Escribe: `SELECT * FROM students INNER JOIN majors ON students.major_id = majors.major_id;`
+
+
